@@ -49,8 +49,9 @@ display: flex;
 justify-content: space-between;
 flex-direction: column;
 .categoryBtns{
+        margin: 0.5rem auto;
 > div{
-    margin: 0.5rem auto;
+    margin: 1rem auto;
     cursor: pointer;
     width:150px;
 }
