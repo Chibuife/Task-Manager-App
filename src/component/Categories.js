@@ -45,7 +45,9 @@ text-align: center;
 border-raduis: 10px;
 box-shadow:  0px 7px 2px ${({ colors }) => colors.colorTertiary};
 min-height: 300px;
-
+display: flex;
+justify-content: space-between;
+flex-direction: column;
 .categoryBtns{
 > div{
     margin: 0.5rem auto;
@@ -70,9 +72,8 @@ span{
     background-color: white;
 }
 .addCategory{
-    position: absolute;
-    bottom: 5%;
-    left: 5%;
+    margin-left: auto;
+    margin-right:auto;
     cursor: pointer; 
 }
  
