@@ -1,37 +1,43 @@
 import React, { useState } from 'react'
 import styled from 'styled-components'
 import Button from './Button'
-import { colors } from '../colorVariables'
 
 const Categories = ['Urgent', 'Important', 'Later', 'To study', 'Completed']
-const Modal = ({ setModal, setTaskArray }) => {
+const Modal = ({ setModal, setTaskArray, colors, setEdithTask, edithTask }) => {
   const [description, setDescription] = useState()
   const [button, setButton] = useState()
-  // console.log(description)
-  // console.log(button)
+  const [changed, setChanged] = useState()
+
+ 
 
 
   const addArrayFn = ()=>{
-    const existingData = JSON.parse(localStorage.getItem('task'))
-    if (description && button){
+    let  existingData = JSON.parse(localStorage.getItem('task'))
+    if (description && button && !edithTask){
       setModal(false) 
       if (button !== 'Completed'){
-        existingData.push({ description: description, button: button, category: 'Active' })
+        existingData.push({ id: existingData.length+1,  description: description, button: button, category: 'Active' })
       }else{
-        existingData.push({ description: description, button: button, category: 'Completed' })
+        existingData.push({ id: existingData.length+1, description: description, button: button, category: 'Completed' })
       }
       localStorage.setItem('task', JSON.stringify(existingData))
       setTaskArray(JSON.parse(localStorage.getItem('task', JSON.stringify(existingData))))
+    }
+    if (edithTask){
+      existingData = existingData.filter((item)=> item.id !== edithTask.id)
+      existingData.push({ id: edithTask.id, description: description, button: button, category: 'Active' })
+      localStorage.setItem('task', JSON.stringify(existingData))
+      setModal(false) 
     }
   }
 
 
 
   return (
-    <ModalBody onClick={() => setModal(false) }>
-      <ModalChild onClick={e => e.stopPropagation()}>
+    <ModalBody onClick={() => setModal(false) || setEdithTask() }>
+      <ModalChild onClick={e => e.stopPropagation()} colors={colors}>
         <h4>CREATE TASK</h4>
-        <input type="text" placeholder='Task description...' value={description} onChange={(e) => setDescription(e.target.value)} />
+        <input type="text" placeholder='Task description...' value={description ? description : edithTask && !changed ? edithTask.description : description} onChange={(e) => setDescription(e.target.value) || setChanged(true)} />
         <div>
           <div></div>
           <div className='catdesign'><div className='line'></div> <span> Categories</span> <div className='line'></div></div>
@@ -51,6 +57,12 @@ const Modal = ({ setModal, setTaskArray }) => {
     </ModalBody>
   )
 }
+
+
+
+
+
+
 const ModalBody = styled.div`
 // min-height: 100vh;
 width: 100%;
@@ -69,11 +81,16 @@ const ModalChild = styled.div`
 color: white;
 width: 50%;
 text-align: center;
-background-color: ${colors.colorPrimary};
+background-color: ${({ colors }) => colors.colorPrimary};
 border:2px solid white;
 border-radius: 5px;
 margin: 3rem 0;
+height: 65%; 
+
+  @media (max-width: 500px) {
 height: 55%; 
+  }
+  
 input{
   padding: 0.2rem 0.5rem;
   outline: none;
@@ -109,7 +126,6 @@ span{
 const FlexCategories = styled.div`
 display: flex;
 flex-wrap: wrap;
-// background-color: red;
 width: 80%;
 justify-content: center;
 margin: 1rem auto;

@@ -1,21 +1,20 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import styled from "styled-components"
 import sun from '../image/sun.svg'
+import moon from '../image/moon.svg'
 import Modal from './Modal'
-import { colors } from '../colorVariables'
-import { useDispatch } from 'react-redux'
-import { switchMode } from '../store/modeSlice'
 
-const PageLayout = ({ children, modal, setModal, setTaskArray }) => {
-const dispatch = useDispatch()
+const PageLayout = ({ children, modal, setModal, setTaskArray, currentState, setCurrent, colors, setEdithTask, edithTask }) => {
+
+  useEffect(() => localStorage.setItem('mode', currentState), [currentState])
   return (
     <>
-    <Body>
-        {modal && <Modal setTaskArray={setTaskArray} setModal={setModal} />}
-      <BodyChild>
+      <Body colors={colors}>
+        {modal && <Modal colors={colors} setTaskArray={setTaskArray} setModal={setModal} setEdithTask={setEdithTask} edithTask={edithTask}/>}
+        <BodyChild colors={colors}>
         <h1>Personal <div> Task Manager</div></h1>
           <div className='addBtn' onClick={() => setModal(true)}>Add New Task</div>
-          <div className='img' onClick={() => dispatch(switchMode())}> <img width={20} height={20} src={sun} alt="" /></div>
+          <div className='img' onClick={() => currentState ? setCurrent(false) : setCurrent(true)}> <img width={20} height={20} src={ currentState ? sun: moon} alt="" /></div>
         {
             children
         }
@@ -28,7 +27,7 @@ const dispatch = useDispatch()
 const Body = styled.div`
 max-width: 1400px;
 min-height: 100vh;
-background-color: ${colors.colorSecondary};
+background-color: ${({colors})=> colors.colorSecondary};
 position: relative;
 padding: 1.5rem 0;
 `
@@ -41,6 +40,7 @@ position: relative;
     position: absolute;
     top: 0;
     right: 0;
+    cursor: pointer;
 }
 
 > h1{
@@ -60,13 +60,13 @@ position: relative;
   cursor: pointer;
   margin:  1rem auto;
   width: 150px;
-  background-color: ${colors.colorPrimary};
+  background-color: ${({ colors }) => colors.colorPrimary};
   padding: 0.5rem 1rem;
   border-radius: 20px;
   font-weight: 700;
   display: flex;
   justify-content: center;
-  box-shadow:  0px 7px 2px ${colors.colorTertiary};
+  box-shadow:  0px 7px 2px ${({ colors }) => colors.colorTertiary};
 color: white;
 display: none;
    @media (max-width: 800px) {

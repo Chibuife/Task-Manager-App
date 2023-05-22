@@ -1,20 +1,33 @@
 import React from 'react'
 import Button from './Button'
 import styled from 'styled-components'
-import { colors } from '../colorVariables'
+// import { colors } from '../colorVariables'
 
 const categoriesBtn = ['Completed', 'Urgent', 'Important', 'Later', 'To study']
 const Categories = ({
-
+    colors,
+    taskArray,
+    setTaskArray
 }) => {
+
+    const sortCategoryFn = (item)=>{
+        taskArray = JSON.parse(localStorage.getItem('task'))
+        
+        taskArray = taskArray.filter((it) => it.button === item)
+
+        setTaskArray(taskArray)
+}
+
     return (
-        <CategoriesStyle>
+        <CategoriesStyle colors={colors}>
             <div className='catdesign'><div className='line'></div> <span> Categories</span> <div className='line'></div></div>
             <div className="categoryBtns">
                 {
                     categoriesBtn ? categoriesBtn.map((item, index) => {
                         return (
-                            <Button width={'150px'} borderRaduis={'10px'} text={item} height={'25px'} />
+                             <div key={index} onClick={() => sortCategoryFn(item)}>
+                                <Button width={'150px'} borderRaduis={'10px'} text={item} height={'25px'} />
+                             </div>  
                         )
                     }) : null
                 }
@@ -27,16 +40,17 @@ const CategoriesStyle = styled.div`
 padding: 2rem 0;
 position: relative;
     border-radius: 5px;
-background-color: ${colors.colorPrimary};
+background-color: ${({ colors }) => colors.colorPrimary};
 text-align: center;
 border-raduis: 10px;
-box-shadow:  0px 7px 2px ${colors.colorTertiary};
+box-shadow:  0px 7px 2px ${({ colors }) => colors.colorTertiary};
 min-height: 300px;
 
 .categoryBtns{
 > div{
     margin: 0.5rem auto;
     cursor: pointer;
+    width:150px;
 }
 }
 

@@ -7,8 +7,8 @@ const modeSlce = createSlice({
     }],
     reducers: {
         switchMode(state, action){
-           state.mode =  "a";
-        // console.log(!state)
+           state.mode =  false
+
         },
     }
 })

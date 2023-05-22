@@ -2,11 +2,10 @@ import React from 'react'
 import Button from './Button'
 import styled from 'styled-components'
 import tick from '../image/tickIcon.svg'
-import { colors } from '../colorVariables'
 
-function TaskBar({ description, button }) {
+function TaskBar({ description, button, colors }) {
   return (
-    <TaskBarStyle color={button} >
+    <TaskBarStyle color={button} colors={colors} >
       <div className='verified'>
         <img src={tick} width={12} alt="" />
       </div>
@@ -20,12 +19,11 @@ function TaskBar({ description, button }) {
   )
 }
 const TaskBarStyle = styled.div`
-// background-color: red;
 position: relative;
 // overflow: hidden;
 display: flex;
 justify-content: space-between;
-background-color: ${colors.colorPrimary};
+background-color: ${({ colors }) => colors.colorPrimary};
 color: #E4E4E4;
 padding:  1rem ;
 .description{
