@@ -6,7 +6,7 @@ import PageLayout from './component/PageLayout'
 
 const task = [{ id: 1, description: 'Memorize the fifty states and their capitals', button: 'Completed', category: 'Completed' }, { id: 2, description: 'Memorize the fifty states and their capitals', button: 'Urgent', category: 'Active' }, { id: 3, description: 'Memorize the fifty states and their capitals', button: 'Important', category: 'Active' }, { id: 4, description: 'Memorize the fifty states and their capitals', button: 'Later', category: 'Active' }, { id: 5, description: 'Memorize the fifty states and their capitals', button: 'To study', category: 'Active' },]
 const PersonalTaskManager = () => {
-  const [modal, setModal] = useState(true)
+  const [modal, setModal] = useState(false)
   const [taskArray, setTaskArray] = useState(JSON.parse(localStorage.getItem('task')));
   const [currentState, setCurrent] = useState(localStorage.getItem('mode'))
   const [edithTask, setEdithTask] = useState()
